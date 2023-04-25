@@ -18,7 +18,7 @@ export default async function handler(
 
 async function getAccounts() {
   return await fetch(
-    (process.env.TRANSACTION_API_PATH_V8 as string) + "?path=account",
+    (process.env.TRANSACTION_API_PATH_V9 as string) + "?path=account",
     {
       method: "GET",
     }

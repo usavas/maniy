@@ -17,9 +17,7 @@ export default async function handler(
 }
 
 async function saveTransaction(transaction: string) {
-  console.log(process.env.TRANSACTION_API_PATH_V8 as string);
-
-  return await fetch(process.env.TRANSACTION_API_PATH_V8 as string, {
+  return await fetch(process.env.TRANSACTION_API_PATH_V9 as string, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

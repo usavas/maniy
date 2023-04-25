@@ -2,10 +2,12 @@ import React from "react";
 import Account from "@/src/models/Account";
 import Currency from "@/src/models/Currency";
 import Transaction from "@/src/models/Transaction";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 interface Props {
   transactionType: "income" | "expense";
+  accounts: Account[];
+  currencies: Currency[];
 }
 
 const TransactionComp: React.FC<Props> = (props: Props) => {
@@ -15,44 +17,12 @@ const TransactionComp: React.FC<Props> = (props: Props) => {
       : Transaction.createIncome("", 0.0, "", "")
   );
 
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [currencies, setCurrencies] = useState<Currency[]>([]);
-
   const accountInputRef = useRef<HTMLSelectElement>(null);
-
-  useEffect(() => {
-    getAccounts();
-    getCurrencies();
-  }, []);
-
-  async function getAccounts() {
-    await fetch("/api/account", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setAccounts(data);
-      })
-      .catch((error) => console.error(error));
-  }
-
-  async function getCurrencies() {
-    await fetch("/api/currency", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setCurrencies(data);
-      })
-      .catch((error) => console.error(error));
-  }
 
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const { account, amount, description } = transaction!;
+    const { account, amount, currency, description } = transaction!;
 
     if (!amount) {
       console.log("amount is obligatory");
@@ -126,7 +96,8 @@ const TransactionComp: React.FC<Props> = (props: Props) => {
           ref={accountInputRef}
           value={transaction?.account}
         >
-          {accounts.map((a) => (
+          <option></option>
+          {props.accounts.map((a) => (
             <option key={a.Account}>{a.Account}</option>
           ))}
         </select>
@@ -169,7 +140,8 @@ const TransactionComp: React.FC<Props> = (props: Props) => {
           onChange={handleCurrency}
           value={transaction?.currency}
         >
-          {currencies.map((c) => (
+          <option></option>
+          {props.currencies.map((c) => (
             <option key={c.Currency}>{c.Currency}</option>
           ))}
         </select>
