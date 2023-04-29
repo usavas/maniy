@@ -1,16 +1,18 @@
 import React from "react";
-import Account from "@/src/models/Account";
-import Currency from "@/src/models/Currency";
 import Transaction from "@/src/models/Transaction";
 import { useRef, useState } from "react";
+import UseAccounts from "@/src/states/AccountsState";
+import UseCurrencies from "@/src/states/CurrenciesState";
 
 interface Props {
   transactionType: "income" | "expense";
-  accounts: Account[];
-  currencies: Currency[];
+  updateBalances: () => void;
 }
 
 const TransactionComp: React.FC<Props> = (props: Props) => {
+  const [accounts] = UseAccounts();
+  const [currencies] = UseCurrencies();
+
   const [transaction, setTransaction] = useState<Transaction>(
     props.transactionType === "expense"
       ? Transaction.createExpense("", 0.0, "", "")
@@ -97,7 +99,7 @@ const TransactionComp: React.FC<Props> = (props: Props) => {
           value={transaction?.account}
         >
           <option></option>
-          {props.accounts.map((a) => (
+          {accounts.map((a) => (
             <option key={a.Account}>{a.Account}</option>
           ))}
         </select>
@@ -141,7 +143,7 @@ const TransactionComp: React.FC<Props> = (props: Props) => {
           value={transaction?.currency}
         >
           <option></option>
-          {props.currencies.map((c) => (
+          {currencies.map((c) => (
             <option key={c.Currency}>{c.Currency}</option>
           ))}
         </select>

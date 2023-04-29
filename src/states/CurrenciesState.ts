@@ -1,7 +1,7 @@
 import Currency from "@/src/models/Currency";
 import { useState, useEffect } from "react";
 
-function useCurrencies(): [Currency[]] {
+function UseCurrencies(): [Currency[]] {
   const [currencies, setCurrencies] = useState<Currency[]>([]);
 
   useEffect(() => {
@@ -22,4 +22,4 @@ function useCurrencies(): [Currency[]] {
   return [currencies];
 }
 
-export default useCurrencies;
+export default UseCurrencies;

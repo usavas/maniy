@@ -1,16 +1,12 @@
 import TransactionComp from "@/components/TransactionComp";
 import Balance from "@/src/models/Balance";
-import UseAccounts from "@/src/states/AccountsState";
 import UseBalances from "@/src/states/BalancesState";
-import UseCurrencies from "@/src/states/CurrenciesState";
 import { useState } from "react";
 
 type TransactionType = "expense" | "income";
 
 export default function Home() {
-  const [balances] = UseBalances();
-  const [accounts] = UseAccounts();
-  const [currencies] = UseCurrencies();
+  const [balances, updateBalances] = UseBalances();
 
   const [transactionType, setTransactionType] =
     useState<TransactionType>("expense");
@@ -19,13 +15,13 @@ export default function Home() {
     setTransactionType(transactionType);
   }
 
-  var totalBalanceUSD: number = balances
+  const totalBalanceUSD: number = balances
     .filter((b) => b.Currency === "USD")
     .reduce((acc: any, curr: Balance) => {
       return acc + curr.Amount;
     }, 0);
 
-  var totalBalanceTRY: number = balances
+  const totalBalanceTRY: number = balances
     .filter((b) => b.Currency === "TRY")
     .reduce((acc: any, curr: Balance) => {
       return acc + curr.Amount;
@@ -70,8 +66,7 @@ export default function Home() {
       </ul>
       <TransactionComp
         transactionType={transactionType}
-        currencies={currencies}
-        accounts={accounts}
+        updateBalances={updateBalances}
       ></TransactionComp>
     </main>
   );

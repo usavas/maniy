@@ -1,7 +1,7 @@
 import Balance from "@/src/models/Balance";
 import { useState, useEffect } from "react";
 
-function UseBalances(): [Balance[]] {
+function UseBalances(): [Balance[], () => void] {
   const [balances, setBalances] = useState<Balance[]>([]);
 
   useEffect(() => {
@@ -19,7 +19,11 @@ function UseBalances(): [Balance[]] {
       .catch((error) => console.error(error));
   }
 
-  return [balances];
+  async function updateBalances() {
+    await getBalances();
+  }
+
+  return [balances, updateBalances];
 }
 
 export default UseBalances;
