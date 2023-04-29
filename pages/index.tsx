@@ -1,56 +1,19 @@
 import TransactionComp from "@/components/TransactionComp";
-import Account from "@/src/models/Account";
 import Balance from "@/src/models/Balance";
-import Currency from "@/src/models/Currency";
-import { useEffect, useState } from "react";
+import UseAccounts from "@/src/states/AccountsState";
+import UseBalances from "@/src/states/BalancesState";
+import UseCurrencies from "@/src/states/CurrenciesState";
+import { useState } from "react";
 
 type TransactionType = "expense" | "income";
 
 export default function Home() {
-  const [balances, setBalances] = useState<Balance[]>([]);
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [currencies, setCurrencies] = useState<Currency[]>([]);
+  const [balances] = UseBalances();
+  const [accounts] = UseAccounts();
+  const [currencies] = UseCurrencies();
+
   const [transactionType, setTransactionType] =
     useState<TransactionType>("expense");
-
-  useEffect(() => {
-    getBalances();
-    getAccounts();
-    getCurrencies();
-  }, []);
-
-  async function getBalances() {
-    await fetch("/api/balance", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setBalances(data);
-      })
-      .catch((error) => console.error(error));
-  }
-
-  async function getAccounts() {
-    await fetch("/api/account", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setAccounts(data);
-      })
-      .catch((error) => console.error(error));
-  }
-
-  async function getCurrencies() {
-    await fetch("/api/currency", {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setCurrencies(data);
-      })
-      .catch((error) => console.error(error));
-  }
 
   function handleTransactionType(transactionType: TransactionType) {
     setTransactionType(transactionType);
