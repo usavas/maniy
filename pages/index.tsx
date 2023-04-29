@@ -25,7 +25,6 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log({ balances: data });
         setBalances(data);
       })
       .catch((error) => console.error(error));
@@ -101,11 +100,6 @@ export default function Home() {
         </button>
       </div>
       <ul>
-        {balances.map((b: Balance, i: number) => (
-          <li key={b.Account + b.Currency.toString()}>
-            {b.Account} {b.Amount} {b.Currency}
-          </li>
-        ))}
         <li className="mt-2">
           {"Total: " + totalBalanceUSD.toFixed(2) + " USD"}
         </li>
