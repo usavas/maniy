@@ -25,6 +25,7 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log({ balances: data });
         setBalances(data);
       })
       .catch((error) => console.error(error));
@@ -36,7 +37,6 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setAccounts(data);
       })
       .catch((error) => console.error(error));
@@ -48,7 +48,6 @@ export default function Home() {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         setCurrencies(data);
       })
       .catch((error) => console.error(error));
@@ -61,13 +60,13 @@ export default function Home() {
   var totalBalanceUSD: number = balances
     .filter((b) => b.Currency === "USD")
     .reduce((acc: any, curr: Balance) => {
-      return acc + curr.Capital;
+      return acc + curr.Amount;
     }, 0);
 
   var totalBalanceTRY: number = balances
     .filter((b) => b.Currency === "TRY")
     .reduce((acc: any, curr: Balance) => {
-      return acc + curr.Capital;
+      return acc + curr.Amount;
     }, 0);
 
   return (
@@ -102,9 +101,9 @@ export default function Home() {
         </button>
       </div>
       <ul>
-        {balances.map((b) => (
-          <li key={b.Platform + b.Currency.toString()}>
-            {b.Platform} {b.Capital} {b.Currency}
+        {balances.map((b: Balance, i: number) => (
+          <li key={b.Account + b.Currency.toString()}>
+            {b.Account} {b.Amount} {b.Currency}
           </li>
         ))}
         <li className="mt-2">

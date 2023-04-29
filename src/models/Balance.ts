@@ -1,11 +1,11 @@
 export default class Balance {
-  Platform: string;
-  Capital: number;
+  Account: string;
   Currency: string;
+  Amount: number;
 
-  public constructor(platform: string, capital: number, currency: string) {
-    this.Platform = platform;
-    this.Capital = capital;
+  public constructor(account: string, currency: string, amount: number) {
+    this.Account = account;
+    this.Amount = amount;
     this.Currency = currency;
   }
 }
