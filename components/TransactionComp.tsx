@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Transaction from "@/src/models/Transaction";
 import { useRef, useState } from "react";
 import UseAccounts from "@/src/states/AccountsState";
@@ -13,11 +13,20 @@ const TransactionComp: React.FC<Props> = (props: Props) => {
   const [accounts] = UseAccounts();
   const [currencies] = UseCurrencies();
 
-  const [transaction, setTransaction] = useState<Transaction>(
-    props.transactionType === "expense"
+  function getTransactionBasedOnCurrentType() {
+    return props.transactionType === "expense"
       ? Transaction.createExpense("", 0.0, "", "")
-      : Transaction.createIncome("", 0.0, "", "")
+      : Transaction.createIncome("", 0.0, "", "");
+  }
+
+  const [transaction, setTransaction] = useState<Transaction>(
+    getTransactionBasedOnCurrentType()
   );
+
+  useEffect(() => {
+    const transaction = getTransactionBasedOnCurrentType();
+    setTransaction(transaction);
+  }, [props.transactionType]);
 
   const accountInputRef = useRef<HTMLSelectElement>(null);
 
@@ -36,6 +45,10 @@ const TransactionComp: React.FC<Props> = (props: Props) => {
       return;
     }
 
+    if (transaction.type === "out") {
+      transaction.amount = transaction.amount * -1;
+    }
+
     await fetch("/api/transaction", {
       method: "POST",
       headers: {
@@ -45,8 +58,8 @@ const TransactionComp: React.FC<Props> = (props: Props) => {
     })
       .then((response) => response.text())
       .then((data) => {
-        console.log(data);
         clearInputs();
+        props.updateBalances();
         accountInputRef.current?.focus();
       })
       .catch((error) => console.error(error));

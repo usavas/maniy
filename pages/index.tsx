@@ -12,6 +12,7 @@ export default function Home() {
     useState<TransactionType>("expense");
 
   function handleTransactionType(transactionType: TransactionType) {
+    console.log(transactionType);
     setTransactionType(transactionType);
   }
 
