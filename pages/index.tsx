@@ -30,7 +30,7 @@ export default function Home() {
 
   return (
     <main className={`flex min-h-screen flex-col justify-normal p-12`}>
-      <h1>Balance</h1>
+      <h1>Balance Update Test</h1>
       <div className="flex my-8 flex-row items-stretch justify-around">
         <button
           className={
